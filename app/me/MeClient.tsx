@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 interface MeClientProps {
   userId: string;
@@ -68,18 +69,18 @@ export default function MeClient({ userId, email }: MeClientProps) {
         </div>
 
         <div className="mt-6 flex gap-4">
-          <a
+          <Link
             href="/admin"
             className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
           >
             Go to Admin Dashboard
-          </a>
-          <a
+          </Link>
+          <Link
             href="/"
             className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
           >
             Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

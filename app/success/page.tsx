@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function SuccessPage() {
   const searchParams = useSearchParams();
@@ -58,12 +59,12 @@ export default function SuccessPage() {
           <p>Redirecting to home in {countdown} seconds...</p>
         </div>
 
-        <a
+        <Link
           href="/"
           className="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors"
         >
           Go to Home Now
-        </a>
+        </Link>
       </div>
     </div>
   );

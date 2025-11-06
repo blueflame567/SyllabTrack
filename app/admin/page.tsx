@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import AdminDashboard from "./AdminDashboard";
+import Link from "next/link";
 
 // Add your Clerk user ID here to grant admin access
 // Go to /me to find your Clerk user ID
@@ -28,9 +29,9 @@ export default async function AdminPage() {
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md">
           <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
           <p className="text-gray-700">You do not have permission to access the admin dashboard.</p>
-          <a href="/" className="mt-4 inline-block text-indigo-600 hover:text-indigo-700">
+          <Link href="/" className="mt-4 inline-block text-indigo-600 hover:text-indigo-700">
             Return to Home
-          </a>
+          </Link>
         </div>
       </div>
     );

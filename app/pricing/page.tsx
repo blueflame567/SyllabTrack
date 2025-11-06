@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import PricingClient from "./PricingClient";
+import Link from "next/link";
 
 export default async function PricingPage() {
   const authResult = await auth();
@@ -31,9 +32,9 @@ export default async function PricingPage() {
             <li>Copy the Price ID (starts with price_)</li>
             <li>Add it to .env.local as STRIPE_MONTHLY_PRICE_ID</li>
           </ol>
-          <a href="/" className="mt-4 inline-block text-indigo-600 hover:text-indigo-700">
+          <Link href="/" className="mt-4 inline-block text-indigo-600 hover:text-indigo-700">
             ← Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     );

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import * as ics from "ics";
 import { saveAs } from "file-saver";
+import Link from "next/link";
 
 interface Event {
   id: string;
@@ -100,9 +101,9 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Syllabus Library</h1>
           <p className="text-gray-600">View and manage all your uploaded syllabi</p>
-          <a href="/" className="text-indigo-600 hover:text-indigo-700 text-sm">
+          <Link href="/" className="text-indigo-600 hover:text-indigo-700 text-sm">
             ← Back to Home
-          </a>
+          </Link>
         </div>
 
         {/* Event Type Filter */}
@@ -129,12 +130,12 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
         {syllabi.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <p className="text-gray-600 text-lg">No syllabi uploaded yet</p>
-            <a
+            <Link
               href="/"
               className="mt-4 inline-block px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
             >
               Upload Your First Syllabus
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="space-y-4">

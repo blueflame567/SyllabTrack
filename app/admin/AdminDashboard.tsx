@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 interface UsageRecord {
   id: string;
@@ -83,9 +84,9 @@ export default function AdminDashboard({ users, stats, currentUserEmail }: Admin
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
           <p className="text-gray-600">Logged in as: {currentUserEmail || "Unknown"}</p>
-          <a href="/" className="text-indigo-600 hover:text-indigo-700 text-sm">
+          <Link href="/" className="text-indigo-600 hover:text-indigo-700 text-sm">
             ← Back to Home
-          </a>
+          </Link>
         </div>
 
         {/* Message Display */}

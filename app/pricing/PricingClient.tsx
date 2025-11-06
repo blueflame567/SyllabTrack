@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface PricingClientProps {
   currentTier: string;
@@ -74,12 +75,12 @@ export default function PricingClient({ currentTier, monthlyPriceId }: PricingCl
           <p className="text-xl text-gray-600">
             Unlock unlimited syllabus parsing with Premium
           </p>
-          <a
+          <Link
             href="/"
             className="inline-block mt-4 text-indigo-600 hover:text-indigo-700"
           >
             ← Back to Home
-          </a>
+          </Link>
         </div>
 
         {/* Error Message */}
