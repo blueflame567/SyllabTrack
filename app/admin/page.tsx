@@ -58,13 +58,13 @@ export default async function AdminPage() {
 
   const stats = {
     totalUsers: users.length,
-    freeUsers: users.filter((u) => u.subscriptionTier === "free").length,
-    premiumUsers: users.filter((u) => u.subscriptionTier === "premium").length,
-    totalParses: users.reduce((sum, u) => sum + u.usageRecords.length, 0),
+    freeUsers: users.filter((u: any) => u.subscriptionTier === "free").length,
+    premiumUsers: users.filter((u: any) => u.subscriptionTier === "premium").length,
+    totalParses: users.reduce((sum: number, u: any) => sum + u.usageRecords.length, 0),
     parsesThisMonth: users.reduce(
-      (sum, u) =>
+      (sum: number, u: any) =>
         sum +
-        u.usageRecords.filter((r) => r.month === currentMonth && r.year === currentYear).length,
+        u.usageRecords.filter((r: any) => r.month === currentMonth && r.year === currentYear).length,
       0
     ),
   };
