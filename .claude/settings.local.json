@@ -11,7 +11,9 @@
       "Bash(npx prisma migrate:*)",
       "Bash(mkdir:*)",
       "Bash(powershell:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
