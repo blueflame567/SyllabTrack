@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       where: { clerkId: authResult.userId },
     });
 
-    // Create user if doesn't exist
+    // Create user if doesn't exist (use upsert to handle race condition with webhook)
     if (!user) {
       const clerkUser = await currentUser();
       const email = clerkUser?.emailAddresses?.[0]?.emailAddress;
@@ -42,8 +42,12 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      user = await prisma.user.create({
-        data: {
+      user = await prisma.user.upsert({
+        where: { clerkId: authResult.userId },
+        update: {
+          email,
+        },
+        create: {
           clerkId: authResult.userId,
           email,
           subscriptionTier: "free",

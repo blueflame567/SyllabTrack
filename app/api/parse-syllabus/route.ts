@@ -197,14 +197,19 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      user = await prisma.user.create({
-        data: {
+      // Use upsert to handle race condition with webhook
+      user = await prisma.user.upsert({
+        where: { clerkId: userId },
+        update: {
+          email: email,
+        },
+        create: {
           clerkId: userId,
           email: email,
           subscriptionTier: "free",
         },
       });
-      console.log(`Created new user in database: ${userId}`);
+      console.log(`Created/updated user in database: ${userId}`);
     }
 
     // Check usage limits
