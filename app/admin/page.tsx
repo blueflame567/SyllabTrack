@@ -7,9 +7,7 @@ import Link from "next/link";
 // Add your Clerk user ID here to grant admin access
 // Go to /me to find your Clerk user ID
 const ADMIN_USER_IDS = [
-  "user_34zYSf1ij9MZPTNzgilbOSriY9E"
-  // Example: "user_2abc123def456",
-  // Add your Clerk user ID here - visit /me to get it
+  "user_35XYQliCMfqfBZJw8IJnFPBL1cv",
 ];
 
 export default async function AdminPage() {

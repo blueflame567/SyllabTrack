@@ -6,9 +6,7 @@ import { prisma } from "@/lib/prisma";
 // This MUST match the ADMIN_USER_IDS in app/admin/page.tsx
 // Go to /me to find your Clerk user ID
 const ADMIN_USER_IDS = [
-  "user_34zYSf1ij9MZPTNzgilbOSriY9E"
-  // Example: "user_2abc123def456",
-  // Add your Clerk user ID here - visit /me to get it
+  "user_35XYQliCMfqfBZJw8IJnFPBL1cv",
 ];
 
 export async function POST(request: NextRequest) {
