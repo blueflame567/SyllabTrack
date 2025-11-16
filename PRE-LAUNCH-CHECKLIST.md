@@ -1,7 +1,21 @@
 # 🚀 SyllabTrack Pre-Launch Checklist
 
-**Last Updated:** 2025-11-06
-**Status:** Pre-Production
+**Last Updated:** 2025-11-15
+**Status:** 75% Production Ready
+**Domain:** https://syllabtrack.com ✅ Live
+
+## 🎯 Quick Status: What's Left?
+
+**Critical (Must Do Before Launch):**
+1. ⚠️ Add `CLERK_WEBHOOK_SECRET` to Vercel → [Instructions](#4-🔑-clerk-authentication-setup)
+2. ⚠️ Add `NEXT_PUBLIC_APP_URL` to Vercel → See line 60 below
+3. ⚠️ Create Privacy Policy & Terms pages → [See Section 11](#11-📋-legal--business)
+4. ⚠️ Test complete payment flow with real card
+
+**Important (Should Do Soon):**
+5. Configure Stripe Customer Portal
+6. Customize Stripe email receipts
+7. Remove localhost from Clerk production
 
 ---
 
@@ -51,12 +65,13 @@
   - [✓] `DATABASE_URL`
   - [✓] `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
   - [✓] `CLERK_SECRET_KEY`
-  - [ ] `CLERK_WEBHOOK_SECRET` (new)
+  - [ ] `CLERK_WEBHOOK_SECRET` (required for user sync)
   - [✓] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
   - [✓] `STRIPE_SECRET_KEY`
   - [✓] `STRIPE_WEBHOOK_SECRET`
   - [✓] `STRIPE_MONTHLY_PRICE_ID`
   - [ ] `STRIPE_YEARLY_PRICE_ID` (if offering)
+  - [ ] `NEXT_PUBLIC_APP_URL` (e.g., `https://syllabtrack.com` - required for Stripe redirects)
 - [✓] Mark sensitive variables as "Sensitive" in Vercel
 - [✓] Set environment variables for "Production" environment only
 
@@ -241,11 +256,11 @@ stripe trigger invoice.payment_succeeded
 ### Update Service URLs
 - [✓] Update Clerk allowed domains
   - [✓] Add `https://[YOUR-DOMAIN]` to allowed domains
-  - [ ] Remove localhost URLs from production
-- [ ] Update Stripe redirect URLs
-  - [ ] Success URL: `https://[YOUR-DOMAIN]/success`
-  - [ ] Cancel URL: `https://[YOUR-DOMAIN]/pricing`
-- [ ] Search codebase for hardcoded URLs and update
+  - [ ] Remove localhost URLs from production instance
+- [ ] Update Stripe redirect URLs (via NEXT_PUBLIC_APP_URL env var)
+  - [ ] Add `NEXT_PUBLIC_APP_URL=https://syllabtrack.com` to Vercel
+  - [ ] Redeploy to apply changes
+  - Note: This automatically updates success and cancel URLs in code
 
 ---
 
@@ -697,17 +712,29 @@ async headers() {
 
 ## 📝 Notes & Reminders
 
-### Current Status
-- ✅ Application deployed to Vercel
-- ✅ Build succeeds
-- ✅ Vercel Analytics installed
-- ⚠️ Using TEST API keys (must switch to production)
-- ⚠️ Missing CLERK_WEBHOOK_SECRET environment variable
-- ⚠️ No Privacy Policy or Terms of Service yet
+### Current Status - Production Ready: 75%
+
+**✅ Completed:**
+- Application deployed to Vercel with custom domain
+- Build succeeds
+- Vercel Analytics + Speed Insights installed
+- Database migrations run on production
+- Production Stripe and Clerk keys added
+- Admin dashboard configured
+- All user creation/webhook bugs fixed
+- Stripe customer validation fixed
+
+**⚠️ Still Need To Do:**
+- Add `CLERK_WEBHOOK_SECRET` to Vercel
+- Add `NEXT_PUBLIC_APP_URL` to Vercel
+- Update production Stripe price ID (currently using test)
+- Create Privacy Policy and Terms of Service pages
+- Configure Stripe email receipts and customer portal
+- Remove localhost URLs from Clerk production instance
+- Final end-to-end testing
 
 ### Deployment URL
-- Development: `https://[vercel-preview-url]`
-- Production: `https://[your-custom-domain.com]` (pending domain setup)
+- Production: `https://syllabtrack.com` ✅ Live
 
 ### Important Links
 - Vercel Dashboard: https://vercel.com/dashboard
