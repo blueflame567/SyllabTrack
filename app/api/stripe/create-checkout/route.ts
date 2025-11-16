@@ -42,17 +42,27 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      user = await prisma.user.upsert({
-        where: { clerkId: authResult.userId },
-        update: {
-          email,
-        },
-        create: {
-          clerkId: authResult.userId,
-          email,
-          subscriptionTier: "free",
-        },
+      // Check if user exists with this email (but different clerkId)
+      const existingUserByEmail = await prisma.user.findUnique({
+        where: { email },
       });
+
+      if (existingUserByEmail) {
+        // Update the clerkId for existing user
+        user = await prisma.user.update({
+          where: { id: existingUserByEmail.id },
+          data: { clerkId: authResult.userId },
+        });
+      } else {
+        // Create new user
+        user = await prisma.user.create({
+          data: {
+            clerkId: authResult.userId,
+            email,
+            subscriptionTier: "free",
+          },
+        });
+      }
     }
 
     // Check if user already has a Stripe customer ID

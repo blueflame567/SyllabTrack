@@ -46,40 +46,60 @@ export async function POST(req: Request) {
   try {
     if (eventType === 'user.created') {
       const { id, email_addresses } = evt.data;
+      const email = email_addresses[0].email_address;
 
-      // Create or update user in our database (upsert handles duplicates)
-      await prisma.user.upsert({
-        where: { clerkId: id },
-        update: {
-          email: email_addresses[0].email_address,
-        },
-        create: {
-          clerkId: id,
-          email: email_addresses[0].email_address,
-          subscriptionTier: 'free',
-        },
+      // Try to find existing user by email (in case they deleted and recreated account)
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
       });
 
-      console.log(`User created/updated: ${id}`);
+      if (existingUser) {
+        // Update existing user's clerkId (they recreated their Clerk account)
+        await prisma.user.update({
+          where: { id: existingUser.id },
+          data: { clerkId: id },
+        });
+        console.log(`Updated existing user with new clerkId: ${id}`);
+      } else {
+        // Create new user
+        await prisma.user.create({
+          data: {
+            clerkId: id,
+            email,
+            subscriptionTier: 'free',
+          },
+        });
+        console.log(`User created: ${id}`);
+      }
     }
 
     if (eventType === 'user.updated') {
       const { id, email_addresses } = evt.data;
+      const email = email_addresses[0].email_address;
 
-      // Update user in our database (upsert to handle cases where user doesn't exist yet)
-      await prisma.user.upsert({
+      // Find user by clerkId
+      const user = await prisma.user.findUnique({
         where: { clerkId: id },
-        update: {
-          email: email_addresses[0].email_address,
-        },
-        create: {
-          clerkId: id,
-          email: email_addresses[0].email_address,
-          subscriptionTier: 'free',
-        },
       });
 
-      console.log(`User updated: ${id}`);
+      if (user) {
+        // Update existing user
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { email },
+        });
+        console.log(`User updated: ${id}`);
+      } else {
+        // User doesn't exist yet, create them
+        await prisma.user.create({
+          data: {
+            clerkId: id,
+            email,
+            subscriptionTier: 'free',
+          },
+        });
+        console.log(`User created (via update event): ${id}`);
+      }
     }
 
     if (eventType === 'user.deleted') {
