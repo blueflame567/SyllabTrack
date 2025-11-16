@@ -43,45 +43,60 @@ export async function POST(req: Request) {
   // Handle the webhook
   const eventType = evt.type;
 
-  if (eventType === 'user.created') {
-    const { id, email_addresses } = evt.data;
+  try {
+    if (eventType === 'user.created') {
+      const { id, email_addresses } = evt.data;
 
-    // Create user in our database
-    await prisma.user.create({
-      data: {
-        clerkId: id,
-        email: email_addresses[0].email_address,
-        subscriptionTier: 'free',
-      },
-    });
+      // Create or update user in our database (upsert handles duplicates)
+      await prisma.user.upsert({
+        where: { clerkId: id },
+        update: {
+          email: email_addresses[0].email_address,
+        },
+        create: {
+          clerkId: id,
+          email: email_addresses[0].email_address,
+          subscriptionTier: 'free',
+        },
+      });
 
-    console.log(`User created: ${id}`);
+      console.log(`User created/updated: ${id}`);
+    }
+
+    if (eventType === 'user.updated') {
+      const { id, email_addresses } = evt.data;
+
+      // Update user in our database (upsert to handle cases where user doesn't exist yet)
+      await prisma.user.upsert({
+        where: { clerkId: id },
+        update: {
+          email: email_addresses[0].email_address,
+        },
+        create: {
+          clerkId: id,
+          email: email_addresses[0].email_address,
+          subscriptionTier: 'free',
+        },
+      });
+
+      console.log(`User updated: ${id}`);
+    }
+
+    if (eventType === 'user.deleted') {
+      const { id } = evt.data;
+
+      // Delete user from our database (use deleteMany to avoid errors if user doesn't exist)
+      await prisma.user.deleteMany({
+        where: { clerkId: id as string },
+      });
+
+      console.log(`User deleted: ${id}`);
+    }
+
+    return new Response('', { status: 200 });
+  } catch (error) {
+    console.error(`Error processing webhook event ${eventType}:`, error);
+    // Return 200 anyway to prevent Clerk from retrying (we've logged the error)
+    return new Response('', { status: 200 });
   }
-
-  if (eventType === 'user.updated') {
-    const { id, email_addresses } = evt.data;
-
-    // Update user in our database
-    await prisma.user.update({
-      where: { clerkId: id },
-      data: {
-        email: email_addresses[0].email_address,
-      },
-    });
-
-    console.log(`User updated: ${id}`);
-  }
-
-  if (eventType === 'user.deleted') {
-    const { id } = evt.data;
-
-    // Delete user from our database
-    await prisma.user.delete({
-      where: { clerkId: id as string },
-    });
-
-    console.log(`User deleted: ${id}`);
-  }
-
-  return new Response('', { status: 200 });
 }
