@@ -19,16 +19,36 @@ export async function POST(request: NextRequest) {
       where: { clerkId: authResult.userId },
     });
 
-    if (!user?.stripeCustomerId) {
+    if (!user) {
       return NextResponse.json(
-        { error: "No Stripe customer found" },
+        { error: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    let customerId = user.stripeCustomerId;
+
+    if (!customerId) {
+      return NextResponse.json(
+        { error: "No Stripe customer found. Please subscribe first." },
+        { status: 400 }
+      );
+    }
+
+    // Verify customer exists in Stripe (handles test/live mode switches)
+    try {
+      await stripe.customers.retrieve(customerId);
+    } catch (error) {
+      // Customer doesn't exist in current mode
+      return NextResponse.json(
+        { error: "Stripe customer not found. Your subscription may be in test mode. Please contact support." },
         { status: 400 }
       );
     }
 
     // Create a billing portal session
     const session = await stripe.billingPortal.sessions.create({
-      customer: user.stripeCustomerId,
+      customer: customerId,
       return_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/pricing`,
     });
 
