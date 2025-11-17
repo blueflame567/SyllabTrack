@@ -1,21 +1,25 @@
 # 🚀 SyllabTrack Pre-Launch Checklist
 
-**Last Updated:** 2025-11-15
-**Status:** 75% Production Ready
+**Last Updated:** 2025-11-17
+**Status:** 80% Production Ready
 **Domain:** https://syllabtrack.com ✅ Live
 
-## 🎯 Quick Status: What's Left?
+## 🎯 Quick Status: What's Left to Launch?
 
-**Critical (Must Do Before Launch):**
-1. ⚠️ Add `CLERK_WEBHOOK_SECRET` to Vercel → [Instructions](#4-🔑-clerk-authentication-setup)
-2. ⚠️ Add `NEXT_PUBLIC_APP_URL` to Vercel → See line 60 below
-3. ⚠️ Create Privacy Policy & Terms pages → [See Section 11](#11-📋-legal--business)
-4. ⚠️ Test complete payment flow with real card
+### ⚠️ BLOCKING ISSUES (Must Fix Now):
+1. **Add `NEXT_PUBLIC_APP_URL` to Vercel** → Fixes Stripe localhost redirects
+2. **Add `CLERK_WEBHOOK_SECRET` to Vercel** → Enables automatic user sync
+3. **Update production Stripe Price ID** → Currently using test mode price
 
-**Important (Should Do Soon):**
-5. Configure Stripe Customer Portal
-6. Customize Stripe email receipts
-7. Remove localhost from Clerk production
+### 📋 LEGAL REQUIREMENTS (Before Taking Payments):
+4. **Create Privacy Policy page** → Required by law
+5. **Create Terms of Service page** → Required by law
+
+### ✅ RECOMMENDED (Before Public Launch):
+6. Test complete payment flow with real card
+7. Configure Stripe Customer Portal (subscription management)
+8. Customize Stripe email receipts (branding)
+9. Remove localhost URLs from Clerk production instance
 
 ---
 
@@ -712,26 +716,33 @@ async headers() {
 
 ## 📝 Notes & Reminders
 
-### Current Status - Production Ready: 75%
+### Current Status - Production Ready: 80%
 
-**✅ Completed:**
-- Application deployed to Vercel with custom domain
-- Build succeeds
-- Vercel Analytics + Speed Insights installed
-- Database migrations run on production
-- Production Stripe and Clerk keys added
-- Admin dashboard configured
-- All user creation/webhook bugs fixed
-- Stripe customer validation fixed
+**✅ What's Working:**
+- ✅ Domain live at https://syllabtrack.com with SSL
+- ✅ Application deployed and building successfully
+- ✅ Vercel Analytics + Speed Insights tracking visitors
+- ✅ Database (PostgreSQL on Railway) with all migrations
+- ✅ Production Stripe and Clerk API keys configured
+- ✅ Admin dashboard functional (you have access)
+- ✅ User authentication working (sign up/sign in)
+- ✅ All database bugs fixed (user creation, webhooks)
+- ✅ Stripe customer validation for test/live mode switches
+- ✅ File upload and AI syllabus parsing working
+- ✅ Calendar export (.ics) working
 
-**⚠️ Still Need To Do:**
-- Add `CLERK_WEBHOOK_SECRET` to Vercel
-- Add `NEXT_PUBLIC_APP_URL` to Vercel
-- Update production Stripe price ID (currently using test)
-- Create Privacy Policy and Terms of Service pages
-- Configure Stripe email receipts and customer portal
-- Remove localhost URLs from Clerk production instance
-- Final end-to-end testing
+**⚠️ BLOCKING (Can't Accept Real Payments Yet):**
+- ❌ `NEXT_PUBLIC_APP_URL` not in Vercel → Stripe redirects to localhost
+- ❌ `CLERK_WEBHOOK_SECRET` not in Vercel → Users not syncing to database automatically
+- ❌ Using test Stripe Price ID → Need production price ID
+- ❌ No Privacy Policy → Legally required before collecting payments
+- ❌ No Terms of Service → Legally required
+
+**🔧 Nice to Have (But Not Blocking):**
+- Configure Stripe Customer Portal
+- Customize Stripe email receipts
+- Remove localhost from Clerk production
+- Comprehensive end-to-end testing
 
 ### Deployment URL
 - Production: `https://syllabtrack.com` ✅ Live
