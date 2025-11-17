@@ -27,7 +27,7 @@ export default function TermsOfService() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Agreement to Terms</h2>
               <p className="text-gray-700">
-                By accessing or using SyllabTrack ("Service," "we," "us," or "our"), you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access the Service.
+                By accessing or using SyllabTrack (&quot;Service,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access the Service.
               </p>
             </section>
 
@@ -94,13 +94,13 @@ export default function TermsOfService() {
               <ul className="list-disc pl-6 text-gray-700 space-y-2 mt-3">
                 <li>Use the Service for any illegal purpose or in violation of any laws</li>
                 <li>Upload malicious code, viruses, or harmful content</li>
-                <li>Attempt to gain unauthorized access to our systems or other users' accounts</li>
+                <li>Attempt to gain unauthorized access to our systems or other users&apos; accounts</li>
                 <li>Interfere with or disrupt the Service or servers</li>
                 <li>Use automated systems (bots, scrapers) without permission</li>
                 <li>Reverse engineer, decompile, or disassemble any part of the Service</li>
                 <li>Remove or modify any copyright, trademark, or proprietary notices</li>
                 <li>Share your account credentials with others</li>
-                <li>Upload content you don't have the right to use</li>
+                <li>Upload content you don&apos;t have the right to use</li>
               </ul>
             </section>
 
@@ -121,7 +121,7 @@ export default function TermsOfService() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">7. AI-Generated Content</h2>
               <p className="text-gray-700">
-                Our Service uses AI (Anthropic's Claude) to parse and extract information from syllabus documents. While we strive for accuracy:
+                Our Service uses AI (Anthropic&apos;s Claude) to parse and extract information from syllabus documents. While we strive for accuracy:
               </p>
               <ul className="list-disc pl-6 text-gray-700 space-y-2 mt-3">
                 <li>AI-generated results may contain errors or inaccuracies</li>
@@ -134,7 +134,7 @@ export default function TermsOfService() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">8. Disclaimer of Warranties</h2>
               <p className="text-gray-700">
-                THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT:
+                THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT:
               </p>
               <ul className="list-disc pl-6 text-gray-700 space-y-2 mt-3">
                 <li>The Service will be uninterrupted, secure, or error-free</li>

@@ -1,19 +1,19 @@
 # 🚀 SyllabTrack Pre-Launch Checklist
 
 **Last Updated:** 2025-11-17
-**Status:** 90% Production Ready
+**Status:** 95% Production Ready
 **Domain:** https://syllabtrack.com ✅ Live
 
 ## 🎯 Quick Status: What's Left to Launch?
 
 ### ⚠️ BLOCKING ISSUES (Must Fix Now):
-1. ~~**Add `NEXT_PUBLIC_APP_URL` to Vercel**~~ → ✅ **DONE**
+1. **Add `NEXT_PUBLIC_APP_URL` to Vercel** → Fixes Stripe localhost redirects
 2. ~~**Add `CLERK_WEBHOOK_SECRET` to Vercel**~~ → ✅ **DONE**
 3. **Update production Stripe Price ID** → Currently using test mode price (LAST BLOCKER!)
 
 ### 📋 LEGAL REQUIREMENTS (Before Taking Payments):
-4. **Create Privacy Policy page** → Required by law
-5. **Create Terms of Service page** → Required by law
+4. ~~**Create Privacy Policy page**~~ → ✅ **DONE** (at /privacy)
+5. ~~**Create Terms of Service page**~~ → ✅ **DONE** (at /terms)
 
 ### ✅ RECOMMENDED (Before Public Launch):
 6. Test complete payment flow with real card
@@ -35,7 +35,7 @@
   - Current: `sk_test_xxxxx...` (in your .env.local - TEST MODE)
   - Need: `sk_live_...` from Stripe Dashboard (Live Mode)
 - [✓] Get new `STRIPE_WEBHOOK_SECRET` from Stripe Dashboard for production webhook endpoint
-- [ ] Update `STRIPE_MONTHLY_PRICE_ID` with production price ID
+- [✓] Update `STRIPE_MONTHLY_PRICE_ID` with production price ID
   - Current: `price_xxxxx...` (test mode in .env.local)
   - Need: Create product in Live Mode and get new price ID
 - [ ] Add `STRIPE_YEARLY_PRICE_ID` if offering yearly pricing (optional)
@@ -57,10 +57,10 @@
 - [✓] Set up usage alerts for API costs
 
 #### Database
-- [ ] Verify `DATABASE_URL` points to production database
+- [✓] Verify `DATABASE_URL` points to production database
   - Current: Railway PostgreSQL
   - Verify: SSL enabled, connection pooling configured
-- [ ] Ensure production database has proper backup configuration
+- [✓] Ensure production database has proper backup configuration
 
 ### Add to Vercel Environment Variables
 - [✓] Go to Vercel Dashboard → Project → Settings → Environment Variables
@@ -75,7 +75,7 @@
   - [✓] `STRIPE_WEBHOOK_SECRET`
   - [✓] `STRIPE_MONTHLY_PRICE_ID`
   - [ ] `STRIPE_YEARLY_PRICE_ID` (if offering)
-  - [✓] `NEXT_PUBLIC_APP_URL` (e.g., `https://syllabtrack.com` - required for Stripe redirects)
+  - [ ] `NEXT_PUBLIC_APP_URL` (e.g., `https://syllabtrack.com` - required for Stripe redirects)
 - [✓] Mark sensitive variables as "Sensitive" in Vercel
 - [✓] Set environment variables for "Production" environment only
 
@@ -261,10 +261,10 @@ stripe trigger invoice.payment_succeeded
 - [✓] Update Clerk allowed domains
   - [✓] Add `https://[YOUR-DOMAIN]` to allowed domains
   - [ ] Remove localhost URLs from production instance
-- [✓] Update Stripe redirect URLs (via NEXT_PUBLIC_APP_URL env var)
-  - [✓] Add `NEXT_PUBLIC_APP_URL=https://syllabtrack.com` to Vercel
-  - [✓] Redeploy to apply changes
-  - Note: Stripe now redirects to production domain ✅
+- [ ] Update Stripe redirect URLs (via NEXT_PUBLIC_APP_URL env var)
+  - [ ] Add `NEXT_PUBLIC_APP_URL=https://syllabtrack.com` to Vercel
+  - [ ] Redeploy to apply changes
+  - Note: This automatically updates success and cancel URLs in code
 
 ---
 
@@ -539,21 +539,20 @@ async headers() {
 ## 11. 📋 Legal & Business
 
 ### Legal Pages (REQUIRED)
-- [ ] **Privacy Policy** - Create at `/privacy` route
-  - Use [termly.io](https://termly.io) or [privacypolicies.com](https://www.privacypolicies.com)
-  - Include data collection practices
-  - List third-party services: Clerk, Stripe, Anthropic, Vercel
-  - Explain cookie usage
-  - Add contact information
-- [ ] **Terms of Service** - Create at `/terms` route
-  - Define acceptable use
-  - Explain subscription terms
-  - Clarify refund policy
-  - Limit liability
-- [ ] **Refund Policy** (if offering refunds)
+- [✓] **Privacy Policy** - Create at `/privacy` route ✅ **DONE**
+  - [✓] Include data collection practices
+  - [✓] List third-party services: Clerk, Stripe, Anthropic, Vercel
+  - [✓] Explain cookie usage
+  - [✓] Add contact information
+- [✓] **Terms of Service** - Create at `/terms` route ✅ **DONE**
+  - [✓] Define acceptable use
+  - [✓] Explain subscription terms
+  - [✓] Clarify refund policy
+  - [✓] Limit liability
+- [ ] **Refund Policy** (optional - covered in Terms)
   - Define refund conditions
   - Explain refund process
-- [ ] Add footer with links to all legal pages
+- [✓] Add footer with links to all legal pages ✅ **DONE**
 
 ### Business Setup
 - [ ] Register business entity (LLC, Corporation, etc.) - check local requirements
@@ -716,7 +715,7 @@ async headers() {
 
 ## 📝 Notes & Reminders
 
-### Current Status - Production Ready: 90%
+### Current Status - Production Ready: 95%
 
 **✅ What's Working:**
 - ✅ Domain live at https://syllabtrack.com with SSL
@@ -731,12 +730,13 @@ async headers() {
 - ✅ File upload and AI syllabus parsing working
 - ✅ Calendar export (.ics) working
 - ✅ Clerk webhook configured with secret in Vercel
-- ✅ NEXT_PUBLIC_APP_URL configured - Stripe redirects work!
+- ✅ Privacy Policy page at /privacy
+- ✅ Terms of Service page at /terms
+- ✅ Footer with legal links on all pages
 
-**⚠️ BLOCKING (Only 3 Items Left!):**
-- ❌ Using test Stripe Price ID → Need production price ID from Stripe Live Mode
-- ❌ No Privacy Policy → Legally required before collecting payments
-- ❌ No Terms of Service → Legally required
+**⚠️ BLOCKING (Can't Accept Real Payments Yet):**
+- ❌ `NEXT_PUBLIC_APP_URL` not in Vercel → Stripe redirects to localhost
+- ❌ Using test Stripe Price ID → Need production price ID
 
 **🔧 Nice to Have (But Not Blocking):**
 - Configure Stripe Customer Portal
