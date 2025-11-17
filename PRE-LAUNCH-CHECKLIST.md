@@ -1,14 +1,14 @@
 # 🚀 SyllabTrack Pre-Launch Checklist
 
 **Last Updated:** 2025-11-17
-**Status:** 80% Production Ready
+**Status:** 85% Production Ready
 **Domain:** https://syllabtrack.com ✅ Live
 
 ## 🎯 Quick Status: What's Left to Launch?
 
 ### ⚠️ BLOCKING ISSUES (Must Fix Now):
 1. **Add `NEXT_PUBLIC_APP_URL` to Vercel** → Fixes Stripe localhost redirects
-2. **Add `CLERK_WEBHOOK_SECRET` to Vercel** → Enables automatic user sync
+2. ~~**Add `CLERK_WEBHOOK_SECRET` to Vercel**~~ → ✅ **DONE**
 3. **Update production Stripe Price ID** → Currently using test mode price
 
 ### 📋 LEGAL REQUIREMENTS (Before Taking Payments):
@@ -48,8 +48,8 @@
 - [✓] Replace `CLERK_SECRET_KEY`
   - Current: `sk_test_xxxxx...` (in your .env.local - TEST MODE)
   - Need: `sk_live_...` from production Clerk instance
-- [ ] Add `CLERK_WEBHOOK_SECRET` for production webhook
-  - Currently: **MISSING** - Required for user sync to work!
+- [✓] Add `CLERK_WEBHOOK_SECRET` for production webhook
+  - Added to Vercel ✅
 
 #### Anthropic API Key
 - [✓] Verify `ANTHROPIC_API_KEY` is production-ready (not rate-limited test key)
@@ -69,7 +69,7 @@
   - [✓] `DATABASE_URL`
   - [✓] `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
   - [✓] `CLERK_SECRET_KEY`
-  - [ ] `CLERK_WEBHOOK_SECRET` (required for user sync)
+  - [✓] `CLERK_WEBHOOK_SECRET` (required for user sync)
   - [✓] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
   - [✓] `STRIPE_SECRET_KEY`
   - [✓] `STRIPE_WEBHOOK_SECRET`
@@ -716,7 +716,7 @@ async headers() {
 
 ## 📝 Notes & Reminders
 
-### Current Status - Production Ready: 80%
+### Current Status - Production Ready: 85%
 
 **✅ What's Working:**
 - ✅ Domain live at https://syllabtrack.com with SSL
@@ -730,10 +730,10 @@ async headers() {
 - ✅ Stripe customer validation for test/live mode switches
 - ✅ File upload and AI syllabus parsing working
 - ✅ Calendar export (.ics) working
+- ✅ Clerk webhook configured with secret in Vercel
 
 **⚠️ BLOCKING (Can't Accept Real Payments Yet):**
 - ❌ `NEXT_PUBLIC_APP_URL` not in Vercel → Stripe redirects to localhost
-- ❌ `CLERK_WEBHOOK_SECRET` not in Vercel → Users not syncing to database automatically
 - ❌ Using test Stripe Price ID → Need production price ID
 - ❌ No Privacy Policy → Legally required before collecting payments
 - ❌ No Terms of Service → Legally required
