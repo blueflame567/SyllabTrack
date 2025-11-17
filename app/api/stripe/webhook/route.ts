@@ -95,13 +95,19 @@ export async function POST(request: NextRequest) {
 
         // Update subscription status
         try {
+          const updateData: any = {
+            subscriptionStatus: subscription.status,
+            subscriptionTier: subscription.status === "active" ? "premium" : "free",
+          };
+
+          // Only update subscriptionEndsAt if current_period_end is present
+          if (subscription.current_period_end) {
+            updateData.subscriptionEndsAt = new Date(subscription.current_period_end * 1000);
+          }
+
           const updatedUser = await prisma.user.update({
             where: { id: user.id },
-            data: {
-              subscriptionStatus: subscription.status,
-              subscriptionTier: subscription.status === "active" ? "premium" : "free",
-              subscriptionEndsAt: new Date(subscription.current_period_end * 1000),
-            },
+            data: updateData,
           });
 
           console.log(`[WEBHOOK SUCCESS] Updated subscription for user ${user.id}: ${subscription.status}, tier=${updatedUser.subscriptionTier}`);
