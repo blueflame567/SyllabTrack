@@ -1,15 +1,15 @@
 # 🚀 SyllabTrack Pre-Launch Checklist
 
 **Last Updated:** 2025-11-17
-**Status:** 85% Production Ready
+**Status:** 90% Production Ready
 **Domain:** https://syllabtrack.com ✅ Live
 
 ## 🎯 Quick Status: What's Left to Launch?
 
 ### ⚠️ BLOCKING ISSUES (Must Fix Now):
-1. **Add `NEXT_PUBLIC_APP_URL` to Vercel** → Fixes Stripe localhost redirects
+1. ~~**Add `NEXT_PUBLIC_APP_URL` to Vercel**~~ → ✅ **DONE**
 2. ~~**Add `CLERK_WEBHOOK_SECRET` to Vercel**~~ → ✅ **DONE**
-3. **Update production Stripe Price ID** → Currently using test mode price
+3. **Update production Stripe Price ID** → Currently using test mode price (LAST BLOCKER!)
 
 ### 📋 LEGAL REQUIREMENTS (Before Taking Payments):
 4. **Create Privacy Policy page** → Required by law
@@ -75,7 +75,7 @@
   - [✓] `STRIPE_WEBHOOK_SECRET`
   - [✓] `STRIPE_MONTHLY_PRICE_ID`
   - [ ] `STRIPE_YEARLY_PRICE_ID` (if offering)
-  - [ ] `NEXT_PUBLIC_APP_URL` (e.g., `https://syllabtrack.com` - required for Stripe redirects)
+  - [✓] `NEXT_PUBLIC_APP_URL` (e.g., `https://syllabtrack.com` - required for Stripe redirects)
 - [✓] Mark sensitive variables as "Sensitive" in Vercel
 - [✓] Set environment variables for "Production" environment only
 
@@ -261,10 +261,10 @@ stripe trigger invoice.payment_succeeded
 - [✓] Update Clerk allowed domains
   - [✓] Add `https://[YOUR-DOMAIN]` to allowed domains
   - [ ] Remove localhost URLs from production instance
-- [ ] Update Stripe redirect URLs (via NEXT_PUBLIC_APP_URL env var)
-  - [ ] Add `NEXT_PUBLIC_APP_URL=https://syllabtrack.com` to Vercel
-  - [ ] Redeploy to apply changes
-  - Note: This automatically updates success and cancel URLs in code
+- [✓] Update Stripe redirect URLs (via NEXT_PUBLIC_APP_URL env var)
+  - [✓] Add `NEXT_PUBLIC_APP_URL=https://syllabtrack.com` to Vercel
+  - [✓] Redeploy to apply changes
+  - Note: Stripe now redirects to production domain ✅
 
 ---
 
@@ -716,7 +716,7 @@ async headers() {
 
 ## 📝 Notes & Reminders
 
-### Current Status - Production Ready: 85%
+### Current Status - Production Ready: 90%
 
 **✅ What's Working:**
 - ✅ Domain live at https://syllabtrack.com with SSL
@@ -731,10 +731,10 @@ async headers() {
 - ✅ File upload and AI syllabus parsing working
 - ✅ Calendar export (.ics) working
 - ✅ Clerk webhook configured with secret in Vercel
+- ✅ NEXT_PUBLIC_APP_URL configured - Stripe redirects work!
 
-**⚠️ BLOCKING (Can't Accept Real Payments Yet):**
-- ❌ `NEXT_PUBLIC_APP_URL` not in Vercel → Stripe redirects to localhost
-- ❌ Using test Stripe Price ID → Need production price ID
+**⚠️ BLOCKING (Only 3 Items Left!):**
+- ❌ Using test Stripe Price ID → Need production price ID from Stripe Live Mode
 - ❌ No Privacy Policy → Legally required before collecting payments
 - ❌ No Terms of Service → Legally required
 
