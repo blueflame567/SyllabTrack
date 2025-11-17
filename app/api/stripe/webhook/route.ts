@@ -78,27 +78,37 @@ export async function POST(request: NextRequest) {
         const subscription = event.data.object as any;
         const customerId = subscription.customer as string;
 
+        console.log(`[WEBHOOK] customer.subscription.updated for customer ${customerId}`);
+        console.log(`[WEBHOOK] Subscription status: ${subscription.status}`);
+
         // Find user by Stripe customer ID
         const user = await prisma.user.findUnique({
           where: { stripeCustomerId: customerId },
         });
 
         if (!user) {
-          console.error(`No user found for Stripe customer ${customerId}`);
+          console.error(`[WEBHOOK ERROR] No user found for Stripe customer ${customerId}`);
           break;
         }
 
-        // Update subscription status
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            subscriptionStatus: subscription.status,
-            subscriptionTier: subscription.status === "active" ? "premium" : "free",
-            subscriptionEndsAt: new Date(subscription.current_period_end * 1000),
-          },
-        });
+        console.log(`[WEBHOOK] Found user ${user.id} (${user.email})`);
 
-        console.log(`Updated subscription for user ${user.id}: ${subscription.status}`);
+        // Update subscription status
+        try {
+          const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              subscriptionStatus: subscription.status,
+              subscriptionTier: subscription.status === "active" ? "premium" : "free",
+              subscriptionEndsAt: new Date(subscription.current_period_end * 1000),
+            },
+          });
+
+          console.log(`[WEBHOOK SUCCESS] Updated subscription for user ${user.id}: ${subscription.status}, tier=${updatedUser.subscriptionTier}`);
+        } catch (updateError) {
+          console.error(`[WEBHOOK ERROR] Failed to update user ${user.id}:`, updateError);
+          throw updateError;
+        }
         break;
       }
 

@@ -15,7 +15,11 @@
       "Bash(git commit:*)",
       "Bash(git push)",
       "Bash(git reset:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(curl -I https://syllabtrack.com/api/stripe/webhook)",
+      "Bash(curl -I https://www.syllabtrack.com/api/stripe/webhook)",
+      "Bash(vercel logs:*)",
+      "Bash(npx tsx:*)"
     ],
     "deny": [],
     "ask": []
