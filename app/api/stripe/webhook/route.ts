@@ -36,6 +36,9 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
+        console.log(`[WEBHOOK] checkout.session.completed received for session ${session.id}`);
+        console.log(`[WEBHOOK] Mode: ${session.mode}, Subscription: ${session.subscription}`);
+        console.log(`[WEBHOOK] Metadata:`, session.metadata);
 
         if (session.mode === "subscription" && session.subscription) {
           const subscriptionId = session.subscription as string;
@@ -43,15 +46,19 @@ export async function POST(request: NextRequest) {
           const userId = session.metadata?.userId;
 
           if (!userId) {
-            console.error("No userId in session metadata");
+            console.error("[WEBHOOK ERROR] No userId in session metadata");
+            console.error("[WEBHOOK ERROR] Session metadata:", session.metadata);
             break;
           }
 
+          console.log(`[WEBHOOK] Processing subscription for userId: ${userId}`);
+
           // Get subscription details
           const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any;
+          console.log(`[WEBHOOK] Subscription status: ${subscription.status}`);
 
           // Update user in database
-          await prisma.user.update({
+          const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: {
               stripeCustomerId: customerId,
@@ -62,7 +69,7 @@ export async function POST(request: NextRequest) {
             },
           });
 
-          console.log(`User ${userId} upgraded to premium via subscription ${subscriptionId}`);
+          console.log(`[WEBHOOK SUCCESS] User ${userId} (${updatedUser.email}) upgraded to premium via subscription ${subscriptionId}`);
         }
         break;
       }
