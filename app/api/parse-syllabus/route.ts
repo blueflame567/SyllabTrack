@@ -101,7 +101,7 @@ Syllabus Text:
 ${truncatedText}`;
 
   const message = await anthropic.messages.create({
-    model: "claude-3-5-sonnet-20241022", // More capable model for better extraction
+    model: "claude-sonnet-4-5-20250929", // More capable model for better extraction
     max_tokens: 8192, // Increased to handle more events
     messages: [
       {

@@ -4,16 +4,6 @@
 **Status:** 🎉 100% Production Ready - READY TO LAUNCH!
 **Domain:** https://syllabtrack.com ✅ Live
 
-## 🎯 Quick Status: What's Left to Launch?
-
-### ⚠️ BLOCKING ISSUES (Must Fix Now):
-1. ~~**Add `NEXT_PUBLIC_APP_URL` to Vercel**~~ → ✅ **DONE**
-2. ~~**Add `CLERK_WEBHOOK_SECRET` to Vercel**~~ → ✅ **DONE**
-3. ~~**Update production Stripe Price ID**~~ → ✅ **DONE**
-
-### 📋 LEGAL REQUIREMENTS (Before Taking Payments):
-4. ~~**Create Privacy Policy page**~~ → ✅ **DONE** (at /privacy)
-5. ~~**Create Terms of Service page**~~ → ✅ **DONE** (at /terms)
 
 ### ✅ RECOMMENDED (Before Public Launch):
 6. Test complete payment flow with real card
@@ -28,72 +18,11 @@
 ### Switch ALL Test Keys to Production Keys
 
 #### Stripe Keys
-- [✓] Replace `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-  - Current: `pk_test_xxxxx...` (in your .env.local - TEST MODE)
-  - Need: `pk_live_...` from Stripe Dashboard (Live Mode)
-- [✓] Replace `STRIPE_SECRET_KEY`
-  - Current: `sk_test_xxxxx...` (in your .env.local - TEST MODE)
-  - Need: `sk_live_...` from Stripe Dashboard (Live Mode)
-- [✓] Get new `STRIPE_WEBHOOK_SECRET` from Stripe Dashboard for production webhook endpoint
-- [✓] Update `STRIPE_MONTHLY_PRICE_ID` with production price ID
   - Current: `price_xxxxx...` (test mode in .env.local)
   - Need: Create product in Live Mode and get new price ID
 - [ ] Add `STRIPE_YEARLY_PRICE_ID` if offering yearly pricing (optional)
 
-#### Clerk Authentication
-- [✓] Create production Clerk application at [dashboard.clerk.com](https://dashboard.clerk.com)
-- [✓] Replace `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-  - Current: `pk_test_xxxxx...` (in your .env.local - TEST MODE)
-  - Need: `pk_live_...` from production Clerk instance
-- [✓] Replace `CLERK_SECRET_KEY`
-  - Current: `sk_test_xxxxx...` (in your .env.local - TEST MODE)
-  - Need: `sk_live_...` from production Clerk instance
-- [✓] Add `CLERK_WEBHOOK_SECRET` for production webhook
-  - Added to Vercel ✅
-
-#### Anthropic API Key
-- [✓] Verify `ANTHROPIC_API_KEY` is production-ready (not rate-limited test key)
-- [✓] Check billing limits at [console.anthropic.com](https://console.anthropic.com)
-- [✓] Set up usage alerts for API costs
-
-#### Database
-- [✓] Verify `DATABASE_URL` points to production database
-  - Current: Railway PostgreSQL
-  - Verify: SSL enabled, connection pooling configured
-- [✓] Ensure production database has proper backup configuration
-
-### Add to Vercel Environment Variables
-- [✓] Go to Vercel Dashboard → Project → Settings → Environment Variables
-- [✓] Add all production environment variables:
-  - [✓] `ANTHROPIC_API_KEY`
-  - [✓] `DATABASE_URL`
-  - [✓] `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-  - [✓] `CLERK_SECRET_KEY`
-  - [✓] `CLERK_WEBHOOK_SECRET` (required for user sync)
-  - [✓] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-  - [✓] `STRIPE_SECRET_KEY`
-  - [✓] `STRIPE_WEBHOOK_SECRET`
-  - [✓] `STRIPE_MONTHLY_PRICE_ID`
-  - [ ] `STRIPE_YEARLY_PRICE_ID` (if offering)
-  - [ ] `NEXT_PUBLIC_APP_URL` (e.g., `https://syllabtrack.com` - required for Stripe redirects)
-- [✓] Mark sensitive variables as "Sensitive" in Vercel
-- [✓] Set environment variables for "Production" environment only
-
----
-
 ## 2. 🗄️ Database Setup
-
-### Run Migrations
-- [✓] Run migrations on production database:
-  ```bash
-  npx prisma migrate deploy
-  ```
-- [✓] Verify migration completed successfully
-- [✓] Check all tables exist:
-  - [✓] `User` table
-  - [✓] `UsageRecord` table
-  - [✓] `Syllabus` table
-  - [✓] `Event` table
 
 ### Database Security & Performance
 - [ ] Verify database is not publicly accessible
@@ -113,13 +42,6 @@
 ## 3. 💳 Stripe Payment Setup
 
 ### Create Production Products & Prices
-**⚠️ Switch to LIVE MODE in Stripe Dashboard**
-
-- [✓] Create "SyllabTrack Premium - Monthly" product
-  - Name: "SyllabTrack Premium - Monthly"
-  - Price: $[YOUR_PRICE]/month
-  - Recurring billing
-  - Copy Price ID → Update `STRIPE_MONTHLY_PRICE_ID`
 - [ ] Create "SyllabTrack Premium - Yearly" product (optional)
   - Name: "SyllabTrack Premium - Yearly"
   - Price: $[YOUR_PRICE]/year
@@ -236,26 +158,6 @@ stripe trigger invoice.payment_succeeded
 ---
 
 ## 5. 🌐 Domain & DNS Configuration
-
-### Domain Setup
-- [✓] Purchase domain (if not already owned)
-  - Recommended registrars: Namecheap, Google Domains, Cloudflare
-- [✓] Add custom domain to Vercel
-  - [✓] Go to Vercel Dashboard → Project → Settings → Domains
-  - [✓] Add domain (e.g., `syllabtrack.com`)
-  - [✓] Add www subdomain (e.g., `www.syllabtrack.com`)
-
-### DNS Configuration
-- [✓] Update DNS records at your registrar
-  - [✓] Add A record: `@` → Vercel IP (shown in Vercel dashboard)
-  - [✓] Add CNAME record: `www` → `cname.vercel-dns.com`
-- [✓] Wait for DNS propagation (can take up to 48 hours)
-- [✓] Verify SSL certificate is issued (automatic via Vercel)
-
-### Redirect Configuration
-- [✓] Set up www redirect in Vercel
-  - [✓] Decide: www → non-www OR non-www → www
-  - [✓] Configure in Vercel domain settings
 
 ### Update Service URLs
 - [✓] Update Clerk allowed domains
@@ -449,12 +351,12 @@ async headers() {
 - [ ] Test in incognito/private mode (no cache)
 
 ### Performance Testing
-- [ ] Run Lighthouse audit
+- [✓] Run Lighthouse audit
   - Target scores: 90+ Performance, 90+ Accessibility, 90+ Best Practices, 100 SEO
-  - [ ] Homepage
-  - [ ] Library page
-  - [ ] Pricing page
-- [ ] Test page load times < 3 seconds
+  - [✓] Homepage
+  - [✓] Library page
+  - [✓] Pricing page
+- [✓] Test page load times < 3 seconds
 - [ ] Test file upload with slow connection (throttle in DevTools)
 
 ---
