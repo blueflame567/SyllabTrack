@@ -139,7 +139,7 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
 
         {/* Syllabi List */}
         {syllabi.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
+          <div className="bg-white rounded-lg shadow p-8 md:p-12 text-center">
             <p className="text-gray-600 text-lg">No syllabi uploaded yet</p>
             <Link
               href="/"
@@ -158,10 +158,10 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
 
               return (
                 <div key={syllabus.id} className="bg-white rounded-lg shadow">
-                  <div className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-1">
+                  <div className="p-4 md:p-6">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-1 truncate">
                           {syllabus.courseName || syllabus.fileName}
                         </h3>
                         <p className="text-sm text-gray-500 mb-2">
@@ -171,16 +171,16 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
                           {filteredEvents.length} events ({syllabus.events.length} total)
                         </p>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
                         <button
                           onClick={() => exportToICS(syllabus)}
-                          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm whitespace-nowrap"
                         >
                           Export Filtered
                         </button>
                         <button
                           onClick={() => exportToICS(syllabus, false)}
-                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm whitespace-nowrap"
                         >
                           Export All
                         </button>
@@ -188,7 +188,7 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
                           onClick={() =>
                             setExpandedSyllabus(isExpanded ? null : syllabus.id)
                           }
-                          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm whitespace-nowrap"
                         >
                           {isExpanded ? "Hide" : "View"} Events
                         </button>

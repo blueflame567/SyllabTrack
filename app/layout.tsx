@@ -29,6 +29,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          {/* Preconnect to Clerk domain to speed up authentication */}
+          <link rel="preconnect" href="https://clerk.syllabtrack.com" />
+          <link rel="dns-prefetch" href="https://clerk.syllabtrack.com" />
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
