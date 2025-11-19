@@ -101,8 +101,8 @@ Syllabus Text:
 ${truncatedText}`;
 
   const message = await anthropic.messages.create({
-    model: "claude-3-haiku-20240307", // Cost-effective model
-    max_tokens: 4096, // Maximum allowed for Haiku
+    model: "claude-3-5-sonnet-20241022", // More capable model for better extraction
+    max_tokens: 8192, // Increased to handle more events
     messages: [
       {
         role: "user",
