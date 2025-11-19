@@ -2,9 +2,17 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import * as ics from "ics";
-import { saveAs } from "file-saver";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+// Dynamically import heavy libraries only when needed
+const loadICSLibraries = async () => {
+  const [{ default: ics }, { saveAs }] = await Promise.all([
+    import("ics"),
+    import("file-saver"),
+  ]);
+  return { ics, saveAs };
+};
 
 interface Event {
   id: string;
@@ -48,7 +56,10 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
     );
   };
 
-  const exportToICS = (syllabus: Syllabus, filterByType: boolean = true) => {
+  const exportToICS = async (syllabus: Syllabus, filterByType: boolean = true) => {
+    // Load libraries only when export is clicked
+    const { ics, saveAs } = await loadICSLibraries();
+
     const eventsToExport = filterByType
       ? syllabus.events.filter((e) => selectedTypes.includes(e.type || "other"))
       : syllabus.events;

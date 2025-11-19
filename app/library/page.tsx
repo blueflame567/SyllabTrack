@@ -20,11 +20,21 @@ export default async function LibraryPage() {
   }
 
   // Fetch all syllabi for this user with their events
+  // Optimized query to reduce data transfer
   const syllabi = await prisma.syllabus.findMany({
     where: { userId: user.id },
     include: {
       events: {
         orderBy: { start: "asc" },
+        select: {
+          id: true,
+          title: true,
+          start: true,
+          end: true,
+          description: true,
+          location: true,
+          type: true,
+        },
       },
     },
     orderBy: { createdAt: "desc" },
