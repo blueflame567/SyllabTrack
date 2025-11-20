@@ -31,8 +31,16 @@ function categorizeEvent(title: string): string {
     return "quiz";
   }
 
-  // Exam patterns (removed quiz)
-  if (lowerTitle.match(/\b(exam|test|midterm|final)\b/i)) {
+  // Exam patterns - be more specific to avoid false positives
+  // Match "exam", "test", "midterm", or "final exam" but NOT just "final" alone
+  if (
+    lowerTitle.match(/\b(exam|test|midterm)\b/i) ||
+    lowerTitle.match(/\bfinal\s+exam\b/i)
+  ) {
+    // Exclude review sessions and preparation activities
+    if (lowerTitle.match(/\b(review|preparation|prep|workshop)\b/i)) {
+      return "class";
+    }
     return "exam";
   }
 
