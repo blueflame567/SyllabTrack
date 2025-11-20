@@ -31,27 +31,24 @@ function categorizeEvent(title: string): string {
     return "quiz";
   }
 
+  // Class patterns - check BEFORE exams to avoid false positives
+  // If title explicitly mentions "class", "lecture", "lab", etc., it's a class
+  if (lowerTitle.match(/\b(class|lecture|lab|discussion|session|review|preparation|prep|workshop)\b/i)) {
+    return "class";
+  }
+
   // Exam patterns - be more specific to avoid false positives
   // Match "exam", "test", "midterm", or "final exam" but NOT just "final" alone
   if (
     lowerTitle.match(/\b(exam|test|midterm)\b/i) ||
     lowerTitle.match(/\bfinal\s+exam\b/i)
   ) {
-    // Exclude review sessions and preparation activities
-    if (lowerTitle.match(/\b(review|preparation|prep|workshop)\b/i)) {
-      return "class";
-    }
     return "exam";
   }
 
   // Reading patterns
   if (lowerTitle.match(/\b(reading|chapter|article|book)\b/i)) {
     return "reading";
-  }
-
-  // Class patterns
-  if (lowerTitle.match(/\b(class|lecture|lab|discussion|session)\b/i)) {
-    return "class";
   }
 
   return "other";
