@@ -42,6 +42,9 @@ export default function Footer() {
           <p className="text-sm text-gray-400">
             © {new Date().getFullYear()} SyllabTrack. All rights reserved.
           </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Build: {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 7) || process.env.NEXT_PUBLIC_BUILD_TIME || new Date().toISOString().substring(0, 19)}
+          </p>
         </div>
       </div>
     </footer>
