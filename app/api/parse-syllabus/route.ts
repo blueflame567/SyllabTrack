@@ -337,15 +337,19 @@ export async function POST(request: NextRequest) {
 
     // Save events to database
     const savedEvents = await prisma.event.createMany({
-      data: validEvents.map((event) => ({
-        syllabusId: syllabus.id,
-        title: event.title,
-        start: new Date(event.start),
-        end: event.end ? new Date(event.end) : null,
-        description: event.description || null,
-        location: event.location || null,
-        type: categorizeEvent(event.title),
-      })),
+      data: validEvents.map((event) => {
+        const eventType = categorizeEvent(event.title);
+        console.log(`Event: "${event.title}" -> Type: ${eventType}`);
+        return {
+          syllabusId: syllabus.id,
+          title: event.title,
+          start: new Date(event.start),
+          end: event.end ? new Date(event.end) : null,
+          description: event.description || null,
+          location: event.location || null,
+          type: eventType,
+        };
+      }),
     });
 
     console.log(`Saved syllabus ${syllabus.id} with ${savedEvents.count} events`);
