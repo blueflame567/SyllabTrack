@@ -89,12 +89,20 @@ CRITICAL INSTRUCTIONS:
 4. If an item has a date range (e.g., "Week 1-2"), create separate events for key dates
 5. If you see a schedule or calendar in the syllabus, extract EVERY entry
 
+TITLE FORMATTING RULES (VERY IMPORTANT):
+- Regular class sessions: Start title with "Class:" or "Lecture:" (e.g., "Class: Introduction to Psychology")
+- Exams ONLY: Use "Midterm Exam 1", "Midterm Exam 2", "Final Exam" (only for actual graded exams)
+- Quizzes: Start with "Quiz" (e.g., "Quiz 1")
+- Assignments: Start with "Assignment:", "Paper:", "Essay:", etc.
+- Review sessions: Start with "Review Session:" (NOT "Exam" - these are NOT exams)
+- DO NOT use the word "Exam" or "Test" in titles unless it is an actual graded examination
+
 Return ONLY a JSON array with this exact format:
 [{"title":"Assignment 1","start":"YYYY-MM-DDTHH:mm:ss","description":"optional","location":"optional"}]
 
 Date/Time Rules:
 - Due dates/assignments: use 23:59:00 if no specific time given
-- Classes/exams: use 09:00:00 if no specific time given
+- Classes/exams: use 09:00:00 if no specific time given (use actual time if provided)
 - If year not specified, use 2025
 - If month is before current month (November), assume next year (2026)
 - Format: ISO 8601 (YYYY-MM-DDTHH:mm:ss)
