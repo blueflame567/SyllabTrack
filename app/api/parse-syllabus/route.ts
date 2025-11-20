@@ -37,12 +37,11 @@ function categorizeEvent(title: string): string {
     return "class";
   }
 
-  // Exam patterns - be more specific to avoid false positives
-  // Match "exam", "test", "midterm", or "final exam" but NOT just "final" alone
-  if (
-    lowerTitle.match(/\b(exam|test|midterm)\b/i) ||
-    lowerTitle.match(/\bfinal\s+exam\b/i)
-  ) {
+  // Exam patterns - VERY strict matching
+  // Only match if it's clearly an exam and NOT a class/review session
+  if (lowerTitle.match(/\b(midterm|final)\s+(exam|test)\b/i) ||
+      lowerTitle.match(/^(exam|test)\s*\d*$/i) ||
+      lowerTitle.match(/^(midterm|final exam)$/i)) {
     return "exam";
   }
 
