@@ -96,6 +96,7 @@ TITLE FORMATTING RULES (VERY IMPORTANT):
 - Assignments: Start with "Assignment:", "Paper:", "Essay:", etc.
 - Review sessions: Start with "Review Session:" (NOT "Exam" - these are NOT exams)
 - DO NOT use the word "Exam" or "Test" in titles unless it is an actual graded examination
+- IF word "Class" dont add anything else to the title other than "Class"
 
 Return ONLY a JSON array with this exact format:
 [{"title":"Assignment 1","start":"YYYY-MM-DDTHH:mm:ss","description":"optional","location":"optional"}]
