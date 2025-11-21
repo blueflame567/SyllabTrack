@@ -20,7 +20,8 @@
       "Bash(curl -I https://www.syllabtrack.com/api/stripe/webhook)",
       "Bash(vercel logs:*)",
       "Bash(npx tsx:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(del test-categorization.js check-db.ts check-all-syllabi.ts check-nurs222.ts)"
     ],
     "deny": [],
     "ask": []

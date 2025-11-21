@@ -18,27 +18,31 @@ interface CalendarEvent {
   location?: string;
 }
 
-function categorizeEvent(title: string): string {
+function categorizeEvent(title: string, description?: string | null): string {
   const lowerTitle = title.toLowerCase();
+  const lowerDesc = description?.toLowerCase() || "";
+  const combined = `${lowerTitle} ${lowerDesc}`;
 
-  // Assignment patterns
-  if (lowerTitle.match(/\b(assignment|homework|hw|problem set|ps|essay|paper|project)\b/i)) {
+  // Assignment patterns (check title AND description)
+  if (combined.match(/\b(assignment|homework|hw|problem set|ps|essay|paper|project)\b/i)) {
     return "assignment";
   }
 
   // Quiz patterns (check before exam to prioritize)
-  if (lowerTitle.match(/\b(quiz|quizzes)\b/i)) {
+  if (combined.match(/\b(quiz|quizzes)\b/i)) {
     return "quiz";
   }
 
   // Class patterns - check BEFORE exams to avoid false positives
   // If title explicitly mentions "class", "lecture", "lab", etc., it's a class
+  // Even if description mentions "final" or "exam" in context like "final presentations"
   if (lowerTitle.match(/\b(class|lecture|lab|discussion|session|review|preparation|prep|workshop)\b/i)) {
     return "class";
   }
 
   // Exam patterns - VERY strict matching
-  // Only match if it's clearly an exam and NOT a class/review session
+  // Only match if it's clearly an exam and NOT a class/review/presentation
+  // Must have "exam" or "test" in TITLE (not just description)
   if (lowerTitle.match(/\b(midterm|final)\s+(exam|test)\b/i) ||
       lowerTitle.match(/^(exam|test)\s*\d*$/i) ||
       lowerTitle.match(/^(midterm|final exam)$/i)) {
@@ -46,7 +50,7 @@ function categorizeEvent(title: string): string {
   }
 
   // Reading patterns
-  if (lowerTitle.match(/\b(reading|chapter|article|book)\b/i)) {
+  if (combined.match(/\b(reading|chapter|article|book)\b/i)) {
     return "reading";
   }
 
@@ -338,7 +342,7 @@ export async function POST(request: NextRequest) {
     // Save events to database
     const savedEvents = await prisma.event.createMany({
       data: validEvents.map((event) => {
-        const eventType = categorizeEvent(event.title);
+        const eventType = categorizeEvent(event.title, event.description);
         console.log(`Event: "${event.title}" -> Type: ${eventType}`);
         return {
           syllabusId: syllabus.id,
