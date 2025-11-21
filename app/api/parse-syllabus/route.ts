@@ -14,35 +14,29 @@ interface CalendarEvent {
   title: string;
   start: string;
   end?: string;
-  description?: string;
-  location?: string;
 }
 
-function categorizeEvent(title: string, description?: string | null): string {
+function categorizeEvent(title: string): string {
   const lowerTitle = title.toLowerCase();
-  const lowerDesc = description?.toLowerCase() || "";
-  const combined = `${lowerTitle} ${lowerDesc}`;
 
-  // Assignment patterns (check title AND description)
-  if (combined.match(/\b(assignment|homework|hw|problem set|ps|essay|paper|project)\b/i)) {
+  // Assignment patterns
+  if (lowerTitle.match(/\b(assignment|homework|hw|problem set|ps|essay|paper|project)\b/i)) {
     return "assignment";
   }
 
   // Quiz patterns (check before exam to prioritize)
-  if (combined.match(/\b(quiz|quizzes)\b/i)) {
+  if (lowerTitle.match(/\b(quiz|quizzes)\b/i)) {
     return "quiz";
   }
 
   // Class patterns - check BEFORE exams to avoid false positives
   // If title explicitly mentions "class", "lecture", "lab", etc., it's a class
-  // Even if description mentions "final" or "exam" in context like "final presentations"
   if (lowerTitle.match(/\b(class|lecture|lab|discussion|session|review|preparation|prep|workshop)\b/i)) {
     return "class";
   }
 
   // Exam patterns - VERY strict matching
   // Only match if it's clearly an exam and NOT a class/review/presentation
-  // Must have "exam" or "test" in TITLE (not just description)
   // Must NOT be followed by words like "review", "prep", "preparation"
   if (lowerTitle.match(/\b(midterm|final)\s+(exam|test)\s+(review|prep|preparation)\b/i)) {
     // This is a review session, not an exam - skip to other patterns
@@ -53,7 +47,7 @@ function categorizeEvent(title: string, description?: string | null): string {
   }
 
   // Reading patterns
-  if (combined.match(/\b(reading|chapter|article|book)\b/i)) {
+  if (lowerTitle.match(/\b(reading|chapter|article|book)\b/i)) {
     return "reading";
   }
 
@@ -104,8 +98,8 @@ TITLE FORMATTING RULES (VERY IMPORTANT):
 - Review sessions: Start with "Class -" (NOT "Exam" - these are NOT exams, they are classes)
 - DO NOT use the word "Exam" or "Test" in titles unless it is an actual graded examination
 
-Return ONLY a JSON array with this exact format:
-[{"title":"Assignment 1","start":"YYYY-MM-DDTHH:mm:ss","description":"optional","location":"optional"}]
+Return ONLY a JSON array with this exact format (DO NOT include description or location):
+[{"title":"Assignment 1","start":"YYYY-MM-DDTHH:mm:ss"}]
 
 Date/Time Rules:
 - Due dates/assignments: use 23:59:00 if no specific time given
@@ -345,15 +339,15 @@ export async function POST(request: NextRequest) {
     // Save events to database
     const savedEvents = await prisma.event.createMany({
       data: validEvents.map((event) => {
-        const eventType = categorizeEvent(event.title, event.description);
+        const eventType = categorizeEvent(event.title);
         console.log(`Event: "${event.title}" -> Type: ${eventType}`);
         return {
           syllabusId: syllabus.id,
           title: event.title,
           start: new Date(event.start),
           end: event.end ? new Date(event.end) : null,
-          description: event.description || null,
-          location: event.location || null,
+          description: null,
+          location: null,
           type: eventType,
         };
       }),
