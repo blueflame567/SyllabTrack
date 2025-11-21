@@ -43,9 +43,12 @@ function categorizeEvent(title: string, description?: string | null): string {
   // Exam patterns - VERY strict matching
   // Only match if it's clearly an exam and NOT a class/review/presentation
   // Must have "exam" or "test" in TITLE (not just description)
-  if (lowerTitle.match(/\b(midterm|final)\s+(exam|test)\b/i) ||
-      lowerTitle.match(/^(exam|test)\s*\d*$/i) ||
-      lowerTitle.match(/^(midterm|final exam)$/i)) {
+  // Must NOT be followed by words like "review", "prep", "preparation"
+  if (lowerTitle.match(/\b(midterm|final)\s+(exam|test)\s+(review|prep|preparation)\b/i)) {
+    // This is a review session, not an exam - skip to other patterns
+  } else if (lowerTitle.match(/\b(midterm|final)\s+(exam|test)\b/i) ||
+             lowerTitle.match(/^(exam|test)\s*\d*$/i) ||
+             lowerTitle.match(/^(midterm|final exam)$/i)) {
     return "exam";
   }
 
