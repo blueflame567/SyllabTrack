@@ -19,7 +19,8 @@
       "Bash(curl -I https://syllabtrack.com/api/stripe/webhook)",
       "Bash(curl -I https://www.syllabtrack.com/api/stripe/webhook)",
       "Bash(vercel logs:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

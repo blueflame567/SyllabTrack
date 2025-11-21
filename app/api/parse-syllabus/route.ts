@@ -90,13 +90,12 @@ CRITICAL INSTRUCTIONS:
 5. If you see a schedule or calendar in the syllabus, extract EVERY entry
 
 TITLE FORMATTING RULES (VERY IMPORTANT):
-- Regular class sessions: Start title with "Class:" or "Lecture:" (e.g., "Class: Introduction to Psychology")
+- Regular class sessions: Title must start with "Class -" (e.g., "Class - Aug 25", "Class - Sept 3")
 - Exams ONLY: Use "Midterm Exam 1", "Midterm Exam 2", "Final Exam" (only for actual graded exams)
 - Quizzes: Start with "Quiz" (e.g., "Quiz 1")
 - Assignments: Start with "Assignment:", "Paper:", "Essay:", etc.
-- Review sessions: Start with "Review Session:" (NOT "Exam" - these are NOT exams)
+- Review sessions: Start with "Class -" (NOT "Exam" - these are NOT exams, they are classes)
 - DO NOT use the word "Exam" or "Test" in titles unless it is an actual graded examination
-- IF word "Class" dont add anything else to the title other than "Class"
 
 Return ONLY a JSON array with this exact format:
 [{"title":"Assignment 1","start":"YYYY-MM-DDTHH:mm:ss","description":"optional","location":"optional"}]
