@@ -4,7 +4,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { track } from "@vercel/analytics";
+import { track } from "@/lib/analytics";
 
 // Dynamically import heavy libraries only when needed
 const loadICSLibraries = async () => {

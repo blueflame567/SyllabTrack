@@ -4,7 +4,7 @@ import FileUpload from "./components/FileUpload";
 import { SignInButton, SignUpButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import { useEffect } from "react";
-import { track } from "@vercel/analytics";
+import { track } from "@/lib/analytics";
 
 export default function Home() {
   useEffect(() => {
