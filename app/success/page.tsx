@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -10,6 +11,11 @@ function SuccessContent() {
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
+    // Track successful purchase
+    track("subscription_completed", {
+      sessionId: sessionId || "unknown"
+    });
+
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -21,7 +27,7 @@ function SuccessContent() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [sessionId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">

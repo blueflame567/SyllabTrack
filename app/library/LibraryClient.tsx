@@ -4,6 +4,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { track } from "@vercel/analytics";
 
 // Dynamically import heavy libraries only when needed
 const loadICSLibraries = async () => {
@@ -94,11 +95,25 @@ export default function LibraryClient({ syllabi }: LibraryClientProps) {
     if (error) {
       console.error(error);
       alert("Error creating calendar file");
+      track("library_export_failed", {
+        syllabusId: syllabus.id,
+        error: "ICS creation failed"
+      });
       return;
     }
 
     const blob = new Blob([value || ""], { type: "text/calendar;charset=utf-8" });
     saveAs(blob, `${syllabus.fileName.replace(/\.[^/.]+$/, "")}-calendar.ics`);
+
+    // Track successful export from library
+    track("library_export_success", {
+      syllabusId: syllabus.id,
+      fileName: syllabus.fileName,
+      eventCount: eventsToExport.length,
+      totalEvents: syllabus.events.length,
+      filtered: filterByType,
+      filterTypes: filterByType ? selectedTypes.join(',') : 'all'
+    });
   };
 
   const getEventTypeColor = (type: string | null) => {

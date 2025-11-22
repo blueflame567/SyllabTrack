@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 
 interface PricingClientProps {
   currentTier: string;
@@ -18,6 +19,13 @@ export default function PricingClient({ currentTier, monthlyPriceId }: PricingCl
     setLoading(priceId);
     setError(null);
 
+    // Track upgrade click
+    track("upgrade_clicked", {
+      fromTier: currentTier,
+      toTier: "premium",
+      priceId
+    });
+
     try {
       const response = await fetch("/api/stripe/create-checkout", {
         method: "POST",
@@ -31,19 +39,36 @@ export default function PricingClient({ currentTier, monthlyPriceId }: PricingCl
         throw new Error(data.error || "Failed to create checkout session");
       }
 
+      // Track checkout session created
+      track("checkout_session_created", {
+        fromTier: currentTier,
+        priceId
+      });
+
       // Redirect to Stripe Checkout
       if (data.url) {
         window.location.href = data.url;
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      const errorMessage = err instanceof Error ? err.message : "Something went wrong";
+      setError(errorMessage);
       setLoading(null);
+
+      track("checkout_failed", {
+        fromTier: currentTier,
+        error: errorMessage
+      });
     }
   };
 
   const handleManageSubscription = async () => {
     setLoading("portal");
     setError(null);
+
+    // Track portal access
+    track("billing_portal_clicked", {
+      currentTier
+    });
 
     try {
       const response = await fetch("/api/stripe/create-portal-session", {
@@ -56,13 +81,23 @@ export default function PricingClient({ currentTier, monthlyPriceId }: PricingCl
         throw new Error(data.error || "Failed to open billing portal");
       }
 
+      // Track portal session created
+      track("billing_portal_opened", {
+        currentTier
+      });
+
       // Redirect to Stripe Customer Portal
       if (data.url) {
         window.location.href = data.url;
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      const errorMessage = err instanceof Error ? err.message : "Something went wrong";
+      setError(errorMessage);
       setLoading(null);
+
+      track("billing_portal_failed", {
+        error: errorMessage
+      });
     }
   };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 
 interface CalendarEvent {
   title: string;
@@ -48,8 +49,16 @@ export default function FileUpload() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFiles(Array.from(e.target.files));
+      const fileArray = Array.from(e.target.files);
+      setFiles(fileArray);
       setError("");
+
+      // Track file selection
+      track("file_selected", {
+        fileCount: fileArray.length,
+        fileTypes: fileArray.map(f => f.name.split('.').pop()).join(','),
+        totalSize: fileArray.reduce((sum, f) => sum + f.size, 0)
+      });
     }
   };
 
@@ -69,8 +78,15 @@ export default function FileUpload() {
     if (droppedFiles.length > 0) {
       setFiles(droppedFiles);
       setError("");
+
+      // Track drag and drop
+      track("file_dropped", {
+        fileCount: droppedFiles.length,
+        fileTypes: droppedFiles.map(f => f.name.split('.').pop()).join(',')
+      });
     } else {
       setError("Please drop PDF or DOCX files only");
+      track("file_drop_error", { reason: "invalid_file_type" });
     }
   };
 
@@ -81,8 +97,12 @@ export default function FileUpload() {
       setUploadMode("text");
       setText(sampleText);
       setError("");
+
+      // Track sample usage
+      track("sample_syllabus_loaded");
     } catch (err) {
       setError("Failed to load sample syllabus");
+      track("sample_syllabus_error");
     }
   };
 
@@ -93,8 +113,16 @@ export default function FileUpload() {
     setEvents([]);
     setLoadingProgress("Preparing...");
 
+    const startTime = Date.now();
+
     try {
       let allEvents: CalendarEvent[] = [];
+
+      // Track upload start
+      track("syllabus_upload_started", {
+        mode: uploadMode,
+        fileCount: uploadMode === "file" ? files.length : 0
+      });
 
       if (uploadMode === "file" && files.length > 0) {
         for (let i = 0; i < files.length; i++) {
@@ -147,8 +175,25 @@ export default function FileUpload() {
 
       setEvents(categorizedEvents);
       setLoadingProgress("Done!");
+
+      // Track successful upload
+      const processingTime = Date.now() - startTime;
+      track("syllabus_upload_success", {
+        mode: uploadMode,
+        eventCount: categorizedEvents.length,
+        processingTimeMs: processingTime,
+        fileCount: uploadMode === "file" ? files.length : 0
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      const errorMessage = err instanceof Error ? err.message : "An error occurred";
+      setError(errorMessage);
+
+      // Track upload failure
+      track("syllabus_upload_failed", {
+        mode: uploadMode,
+        error: errorMessage,
+        processingTimeMs: Date.now() - startTime
+      });
     } finally {
       setLoading(false);
       setLoadingProgress("");
@@ -158,6 +203,7 @@ export default function FileUpload() {
   const handleEditEvent = (index: number) => {
     setEditingIndex(index);
     setEditingEvent({ ...events[index] });
+    track("event_edit_started", { eventCategory: events[index].category || "other" });
   };
 
   const handleSaveEdit = () => {
@@ -167,11 +213,17 @@ export default function FileUpload() {
       setEvents(newEvents);
       setEditingIndex(null);
       setEditingEvent(null);
+      track("event_edit_saved", { eventCategory: editingEvent.category || "other" });
     }
   };
 
   const handleDeleteEvent = (index: number) => {
+    const deletedEvent = events[index];
     setEvents(events.filter((_, i) => i !== index));
+    track("event_deleted", {
+      eventCategory: deletedEvent.category || "other",
+      remainingEvents: events.length - 1
+    });
   };
 
   const handleDownloadICS = async () => {
@@ -197,8 +249,16 @@ export default function FileUpload() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+
+      // Track successful download
+      track("calendar_downloaded", {
+        eventCount: events.length,
+        format: "ics"
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to download calendar");
+      const errorMessage = err instanceof Error ? err.message : "Failed to download calendar";
+      setError(errorMessage);
+      track("calendar_download_failed", { error: errorMessage });
     }
   };
 
@@ -219,6 +279,11 @@ export default function FileUpload() {
     });
 
     window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, "_blank");
+
+    // Track Google Calendar add
+    track("google_calendar_add_clicked", {
+      eventCategory: event.category || "other"
+    });
   };
 
   // Calculate statistics
